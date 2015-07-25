@@ -1,0 +1,61 @@
+<ion-view view-title="{{header}}">
+  <ion-content>
+    
+    <div class="padding" ng-click="refresh_list()" >
+     
+        
+
+
+      <button class="button button-energized button-block">
+        Refresh Data
+      </button>
+        
+    </div>
+  <div class="padding">
+    <div class="list">
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Barcode Result:</span>
+                    <input type="text" placeholder="เลขรหัสอุปกรณ์ ..." disabled ng-model="result.text">
+                    <input type="hidden" ng-model="list.serial_num">
+                </label>
+                <!-- <label class="item item-input item-stacked-label">
+                    <span class="input-label">Format:</span>
+                    <input type="text" placeholder="กดปุ่ม Scan สิ..." disabled ng-model="result.format">
+                </label> -->
+
+                 <button class="button button-block button-assertive" ng-click="startScan()">
+                Scan Asset Barcode !
+            </button>
+            </div>
+      <div class="padding">
+                    Filter :
+                    <input class="padding" type="text" placeholder="Search" ng-model="list_search">
+      </div>   
+      </div>     
+     <ion-list>
+      <!-- <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="borrow in borrow_list | filter : list_search " type="item-text-wrap" 
+      href="#/tab/list/{{borrow.id}}/{{borrow.serial_number}}/{{borrow.dept}}/{{borrow.borrow_date}}/{{borrow.borrow_days}}/{{borrow.emp_name}}/{{borrow.staff_name}}/{{borrow.cat_img_path}}"> -->
+
+      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="borrow in borrow_list | filter : list_search " type="item-text-wrap" 
+      href="#/tab/list/{{borrow.id}}/{{borrow.serial_number}}">
+       <img ng-src="{{borrow.cat_img_path}}">
+        <h3> Transaction id # : {{ borrow.id }}</h3>
+        <h3> Serial # : {{ borrow.serial_number }}</h3>
+        <h2> แผนกที่ยืม : {{borrow.dept}}</h2> 
+        <h2> วันที่ยืม : {{borrow.borrow_date}} ( {{ borrow.borrow_days}} วัน )</h2> 
+        <h2> ชื่อผู้ยืม : {{borrow.emp_name}} </h2>
+        <h2> ชื่อผู้จ่ายอุปกรณ์  : {{borrow.staff_name}} </h2>
+        <p> อุปกรณ์ : <b>{{borrow.description}} <b></p>
+        
+          
+
+        <i class="icon ion-chevron-right icon-accessory"></i>
+
+        <ion-option-button class="button-assertive">
+        <!-- <ion-option-button class="button-assertive" ng-click="remove(chat)"> -->
+          Click
+        </ion-option-button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

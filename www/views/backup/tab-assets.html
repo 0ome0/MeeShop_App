@@ -1,0 +1,28 @@
+<ion-view view-title="{{header}}">
+  <ion-content>
+  <!-- <h2>Assets Tab</h2> -->
+   <div class="padding" ng-click="refresh_assetslist()" >
+      <button class="button button-energized button-block">
+        Refresh Data
+      </button>
+  </div>
+
+    <ion-list>
+      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="asset in assets" type="item-text-wrap" href="#/tab/chats/{{chat.id}}">
+        <img ng-src="{{asset.cat_img_path}}">
+        <h2>Serial No. : {{asset.serial_number}}</h2> 
+        <h2>{{asset.catergory}}</h2>
+        <p>{{asset.description}}</p>
+          
+
+        <i class="icon ion-chevron-right icon-accessory"></i>
+
+        <ion-option-button class="button-assertive">
+        <!-- <ion-option-button class="button-assertive" ng-click="remove(chat)"> -->
+          Click
+        </ion-option-button>
+      </ion-item>
+    </ion-list>
+    
+  </ion-content>
+</ion-view>

@@ -1,0 +1,470 @@
+angular.module('starter.controllers', [])
+//
+
+// .controller('BorrowCtrl', function($scope, $stateParams,  $cordovaBarcodeScanner) {
+//   $scope.header = 'ยืมอุปกรณ์';
+
+//    $scope.startScan = function() {
+//         $cordovaBarcodeScanner
+//             .scan()
+//             .then(function(barcodeData) {
+
+//                 $scope.result = barcodeData;
+
+//             }, function(error) {
+//                 alert(error);
+//             });
+//     }
+// })
+
+.value('valueToken', 999)
+
+.factory('sharedData', function() {
+        var value = 0;
+
+        return {
+            getValue: function() {
+                return value;
+            },
+            setValue: function(v) {
+                value = v;
+            },
+            token: '*'
+        };
+})
+
+.controller('BorrowCtrl',['$scope', '$cordovaBarcodeScanner','$http','sharedData','valueToken','$ionicLoading','$location', function($scope, $cordovaBarcodeScanner,$http,sharedData,valueToken,$ionicLoading,$location) {
+
+  $scope.header = 'ยืมอุปกรณ์';
+
+  var d = new Date();
+  var year = d.getUTCFullYear();
+  var month = d.getMonth()+1;
+  var date = d.getDate();
+
+  //$scope.modelDept = "OEM";
+  
+
+
+
+ $scope.times = year + '-' + month + '-' + date;
+  //$scope.times = date;
+  // $scope.startScan = function (){
+  //     alert ("Yeh");
+  // }
+   $scope.serial_num = 0;
+
+   $scope.startScan = function() {
+        $cordovaBarcodeScanner
+            .scan()
+            .then(function(barcodeData) {
+
+                $scope.result = barcodeData;
+                //alert("After Scan Completed");
+
+                $scope.serial_no = barcodeData.text;
+                var barcodeID = $scope.result.text;
+                $scope.serial_num = barcodeID;
+               // alert(result.text);
+               //$scope.addList ($scope.result);
+
+               // set barcode id into factory setData function
+               sharedData.setValue(barcodeID);
+               // var getBarcodeID = sharedData.getValue();
+               //alert("Afer setValue");
+               alert("Barcode : " + barcodeID);
+               $ionicLoading.show();
+                     // connnect api service to add borrow transaction
+                      $http.get("http://www.bdgcenter.com/services_mis_bdg/index.php/service/checkAsset?serial_number="+barcodeID)
+                      .success(function(response){
+                        
+                        $ionicLoading.hide();
+
+                        console.log(response);
+                        // alert("Check serial ok");
+                        
+                         alert(response.description);
+
+                        $scope.asset_detail = response;
+                          // $http.get("http://localhost/works/services/index.php/save/userList")
+                          // .success(function(response){
+                          //   $scope.names = response;
+                          //   console.log(response);
+                          //$scope.changeTxt(listVal); 
+                          return response;
+                      });
+                   
+                      // end connenct api service
+
+            }, function(error) {
+                alert(error);
+            });
+    }
+
+  $scope.linked_list = function(){
+
+  console.log("Linked Log");
+  //alert("linked loggg");
+  $location.path('/tab/list');
+
+
+
+  } // end of link list function
+
+
+  $scope.addList = function(listVal){
+    
+      var d = new Date();
+      var year = d.getUTCFullYear();
+      var month = d.getMonth()+1;
+      var date = d.getDate();
+    
+
+      var borrow_date = year + '-' + month + '-' + date;
+      var staff_name=listVal.staffName;
+      var dept=listVal.dept;   
+      var emp_name=listVal.empName;  
+      var comment=listVal.comment; 
+
+      var serial_num = sharedData.getValue();
+     
+      alert("กำลัง ส่งข้อมูลไปบันทึกที่ Server");
+    
+      //alert("Serial Number : "+ sharedData.getValue());
+     
+      //var serail_num_test = "5014016150821";
+      
+      $ionicLoading.show();
+      // connnect api service to add borrow transaction
+      //$http.get("http://www.bdgcenter.com/services_mis_bdg/index.php/save/add?serial_number="+serial_num+"&staff_name="+staff_name+"&dept="+dept+"&emp_name="+emp_name+"&borrow_date="+borrow_date+"&comment="+comment)
+      $http.get("http://www.bdgcenter.com/services_mis_bdg/index.php/service/addBorrow?serial_number="+serial_num+"&staff_name="+staff_name+"&dept="+dept+"&emp_name="+emp_name+"&borrow_date="+borrow_date+"&comment="+comment)
+      .success(function(response){
+        $ionicLoading.hide();
+        //console.log(response);
+        alert("บันทึกรายการยืม เรียบร้อย");
+        $scope.clearText();
+       // $scope.linked_list();
+        
+          // $http.get("http://localhost/works/services/index.php/save/userList")
+          // .success(function(response){
+          //   $scope.names = response;
+          //   console.log(response);
+
+      });
+    
+      // end connenct api service
+    } // end of addList function
+
+    // check text null value
+    $scope.changeTxt = function(listVal){
+
+        
+        var get_serial_num = sharedData.getValue();
+
+        if ( (typeof(listVal.staffName) == 'undefined') || (typeof(listVal.dept) == 'undefined') || (typeof(listVal.empName) == 'undefined'))  {
+         // console.log("คุณยังใส่ข้อมูลไม่ครบ");
+          $scope.btn_disable = "false" ;
+         // alert('Staff: '+listVal.staffName +' dept : '+listVal.dept+' emp : '+listVal.empName);
+        
+        } else 
+        // if( get_serial_num = 0 || (typeof(get_serial_num) == 'undefined') ) {
+        //  //  console.log("ไม่พบ Serial Number ที่คุณค้นหา");
+        //    $scope.btn_disable = "false" ;
+        //    console.log($scope.btn_disable);
+        //    alert('serial value aa :'+ sharedData.getValue()); 
+        // } else 
+        {
+         // console.log(get_serial_num);
+          $scope.btn_disable = "true" ;
+          console.log($scope.btn_disable);
+          //alert("Set btn_disable = true ");
+        } // end of if
+       
+    } // end of check text null value function
+
+
+    // clear text function 
+    $scope.clearText = function(){
+        
+        $scope.btn_disable = "false" ;
+        $scope.serial_num = 0;
+    
+        window.location.reload();
+      $scope.btn_disable = "false" ;
+      $scope.serial_num = 0;
+
+        $scope.linked_list();
+      //console.log('reload state');
+           
+    }
+    // end of clear text function
+
+}]) // **** end of BorrowController ****
+
+
+
+
+
+
+
+ // **** start List Contrller ****
+.controller('ListCtrl', function($scope, $stateParams, Chats, $http,$ionicLoading, $cordovaBarcodeScanner,sharedData,valueToken,$location) {
+  $scope.header = 'รายการ ยืม อุปกรณ์ ที่ยังไม่ได้คืน';
+
+
+   $ionicLoading.show();
+  // api connect list
+         $http.get("http://www.bdgcenter.com/services_mis_bdg/index.php/service/showBorrowList")
+          .success(function(response){
+            $ionicLoading.hide();
+            //console.log(response);
+           // alert("List Asset ok");
+            //alert(response);
+              // $http.get("http://localhost/works/services/index.php/save/userList")
+              // .success(function(response){
+              //   $scope.names = response;
+              //   console.log(response);
+            $scope.borrow_list = response;
+
+          });
+  // end of api connect list         
+
+// star scan function for return
+
+  $scope.startScan = function() {
+        $cordovaBarcodeScanner
+            .scan()
+            .then(function(barcodeData) {
+
+                $scope.result = barcodeData;
+                //alert("After Scan Completed");
+
+                $scope.serial_no = barcodeData.text;
+                var barcodeID = $scope.result.text;
+               // alert(result.text);
+               //$scope.addList ($scope.result);
+
+               // set barcode id into factory setData function
+               sharedData.setValue(barcodeID);
+               // var getBarcodeID = sharedData.getValue();
+               //alert("Afer setValue");
+               alert("Barcode : " + barcodeID);
+               
+
+                $scope.list_search = barcodeID;
+                alert($scope.list_search);
+
+
+               $ionicLoading.show();
+                     // connnect api service to add borrow transaction
+                      $http.get("http://www.bdgcenter.com/services_mis_bdg/index.php/service/checkAsset?serial_number="+barcodeID)
+                      .success(function(response){
+                        
+                        $ionicLoading.hide();
+
+                       // console.log(response);
+                        // alert("Check serial ok");
+                        
+                         alert(response.description);
+
+                        $scope.asset_detail = response;
+                      
+                          // $http.get("http://localhost/works/services/index.php/save/userList")
+                          // .success(function(response){
+                          //   $scope.names = response;
+                          //   console.log(response);
+
+                          
+
+                          return response;
+                      });
+                   
+                      // end connenct api service
+
+            }, function(error) {
+                alert(error);
+            });
+    }
+
+
+// end of start scan to return function
+
+
+  // start of refresh list function
+  $scope.refresh_list = function(){
+
+   $ionicLoading.show();
+  // api connect
+         $http.get("http://www.bdgcenter.com/services_mis_bdg/index.php/service/showBorrowList")
+          .success(function(response){
+            $ionicLoading.hide();
+            //console.log(response);
+           // alert("List Asset ok");
+            //alert(response);
+              // $http.get("http://localhost/works/services/index.php/save/userList")
+              // .success(function(response){
+              //   $scope.names = response;
+              //   console.log(response);
+            $scope.borrow_list = response;
+          });
+
+  }
+
+})
+
+.controller('HistoryCtrl', function($scope, $stateParams, Chats) {
+  $scope.header = 'ประวัติการ ยืม อุปกรณ์';
+})
+
+.controller('FindCtrl', function($scope, $stateParams, Chats) {
+  $scope.header = 'ค้นหา';
+})
+
+.controller('AssetsCtrl', function($scope, $stateParams, Chats, $http,$ionicLoading,$location) {
+  $scope.header = 'ทะเบียนทรัพย์สิน / อุปกรณ์';
+  $ionicLoading.show();
+  // api connect
+         $http.get("http://www.bdgcenter.com/services_mis_bdg/index.php/service/showAssetList")
+          .success(function(response){
+            $ionicLoading.hide();
+            //console.log(response);
+           // alert("List Asset ok");
+            //alert(response);
+              // $http.get("http://localhost/works/services/index.php/save/userList")
+              // .success(function(response){
+              //   $scope.names = response;
+              //   console.log(response);
+            $scope.assets = response;
+          });
+//
+
+  $scope.refresh_assetslist = function(){
+
+    $ionicLoading.show();
+  // api connect
+         $http.get("http://www.bdgcenter.com/services_mis_bdg/index.php/service/showAssetList")
+          .success(function(response){
+            $ionicLoading.hide();
+            //console.log(response);
+           // alert("List Asset ok");
+            //alert(response);
+              // $http.get("http://localhost/works/services/index.php/save/userList")
+              // .success(function(response){
+              //   $scope.names = response;
+              //   console.log(response);
+            $scope.assets = response;
+          });
+  }
+
+})
+
+
+.controller('ListDetailCtrl', function($scope, $stateParams,  $http,$ionicLoading,$location) {
+  //$scope.chat = Chats.get($stateParams.chatId);
+  $scope.header = "รายละเอียดการยืม"
+  
+  var trans_id = $stateParams.listId ;
+  var serial_num = $stateParams.serialNumber ;
+  var status = "คืน";
+
+  $ionicLoading.show();
+  // api connect
+         $http.get("http://www.bdgcenter.com/services_mis_bdg/index.php/service/showBorrowDetail?trans_id="+trans_id+"&serial_number="+serial_num)
+          .success(function(response){
+            $ionicLoading.hide();
+            console.log(response);
+            //alert("Detail ok");
+            $scope.list_detail = response[0];
+            //alert(list_detail.description);
+            //alert(response);
+              // $http.get("http://localhost/works/services/index.php/save/userList")
+              // .success(function(response){
+              //   $scope.names = response;
+              //   console.log(response);
+            $scope.borrow_detail = response;
+          });
+    // end of api connect
+
+
+   $scope.linked_list = function(){
+
+      console.log("Linked Log");
+      //alert("linked loggg");
+      //$scope.refresh_list();
+      $location.path('/tab/list');
+  }
+
+
+    $scope.updateList = function(listVal){
+      
+      //alert("Click Update");
+      var return_emp    = listVal.return_empName;
+      var return_staff  = listVal.return_staffName;
+
+      // api connect
+         $http.get("http://www.bdgcenter.com/services_mis_bdg/index.php/service/updateBorrowDetail?trans_id="+trans_id+"&return_emp="+return_emp+"&return_staff="+return_staff)
+          .success(function(response){
+            $ionicLoading.hide();
+            console.log(response);
+            alert('บันทึกการคืน เรียบร้อย / ID : '+trans_id);
+            //$scope.list_detail = response[0];
+            //alert(list_detail.description);
+            //alert(response);
+              // $http.get("http://localhost/works/services/index.php/save/userList")
+              // .success(function(response){
+              //   $scope.names = response;
+              //   console.log(response);
+            //$scope.borrow_detail = response;
+            $scope.linked_list();
+
+
+          });
+    // end of api connect
+    } // end of update list function
+
+     $scope.changeTxt = function(listVal){
+
+        if ( (typeof(listVal.return_staffName) == 'undefined') || (typeof(listVal.return_empName) == 'undefined') )  {
+         // console.log("คุณยังใส่ข้อมูลไม่ครบ");
+          $scope.btn_disable = "false" ;
+          //console.log($scope.btn_disable);
+         
+        } else {
+          $scope.btn_disable = "true" ;
+        //  console.log($scope.btn_disable);
+        } // end of if
+       
+    } // end of check text null value function
+  
+})
+
+
+
+
+//
+// .controller('DashCtrl', function($scope) {})
+
+.controller('ChatsCtrl', function($scope, Chats) {
+  // With the new view caching in Ionic, Controllers are only called
+  // when they are recreated or on app start, instead of every page change.
+  // To listen for when this page is active (for example, to refresh data),
+  // listen for the $ionicView.enter event:
+  //
+  //$scope.$on('$ionicView.enter', function(e) {
+  //});
+  
+  $scope.chats = Chats.all();
+  $scope.remove = function(chat) {
+    Chats.remove(chat);
+  }
+})
+
+.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
+  $scope.chat = Chats.get($stateParams.chatId);
+})
+
+.controller('AccountCtrl', function($scope) {
+  $scope.settings = {
+    enableFriends: true
+  };
+});

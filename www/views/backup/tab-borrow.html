@@ -1,0 +1,80 @@
+<ion-view view-title="{{ header }}">
+    <ion-content class="padding">
+        <body>
+            <!-- <h2 class="header_txt">ยืมอุปกรณ์ !</h2> -->
+            <div class="list">
+                <div class="img_hdr" ng-hide="serial_num != '0' || serial_num != ''">
+                    <img src="img/barcode_img.jpg">
+                </div>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Barcode Result:</span>
+                    <input type="text" placeholder="เลขรหัสอุปกรณ์ ..." disabled ng-model="result.text" ng-change="changeTxt()">
+                    <input type="hidden" ng-model="serial_num">
+                </label>
+                <!-- <label class="item item-input item-stacked-label">
+                    <span class="input-label">Format:</span>
+                    <input type="text" placeholder="กดปุ่ม Scan สิ..." disabled ng-model="result.format">
+                </label> -->
+                <button class="button button-block button-assertive" ng-click="startScan()">
+                    Scan Asset Barcode !
+                </button>
+            </div>
+            <div ng-show="serial_num != '0' || serial_num != '' ">
+                <!-- <div ng-show="serial_num != '0' || serial_num != '' "> -->
+                <div class="list">
+                    <label class="item item-input item-select">
+                        <div class="input-label">
+                            ชื่อผู้จ่าย อุปกรณ์ (MIS)
+                        </div>
+                        <select ng-model="list.staffName" ng-change="changeTxt(list)">
+                            <option selected>สราวุธ</option>
+                            <option>สุชีรา</option>
+                            <option>อัครพล</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="list">
+                    <!--  <label class="item item-input item-stacked-label">
+                    <span class="input-label">หน่วยงาน</span>
+                    <input type="text" placeholder="MIS" ng-model="list.dept">
+                </label>   -->
+                    <label class="item item-input item-select">
+                        <div class="input-label">
+                            แผนกที่ยืม
+                        </div>
+                        <select ng-model="list.dept" ng-change="changeTxt(list)">
+                            <option selected>OEM / Inter</option>
+                            <option>HR / Admin</option>
+                            <option>Account / Finance</option>
+                            <option>President Office</option>
+                            <option>CRSM</option>
+                            <option>Marketing PC</option>
+                            <option>Marketing HC</option>
+                            <option>Purchase</option>
+                            <option>Art</option>
+                            <option>MIS</option>
+                        </select>
+                    </label>
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">ชื่อผู้ยืม</span>
+                        <!-- <input type="text" placeholder="สราวุธ เมืองธรรม" ng-model="modelEmpName"> -->
+                        <input type="text" placeholder="ใส่ชื่อผู้ยืม" ng-model="list.empName" ng-change="changeTxt(list)" required>
+                    </label>
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">วันที่ยืมอุปกรณ์</span>
+                        <input type="text" placeholder="" disabled ng-model="times">
+                    </label>
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">หมายเหตุ</span>
+                        <input type="text" placeholder="หมายเหตุ" ng-model="list.comment">
+                    </label>
+                </div>
+                <div class="padding" ng-show="btn_disable == 'true'">
+                    <button class="button button-block button-positive" ng-click="addList(list)">
+                        บันทึกการยืม
+                    </button>
+                </div>
+            </div>
+        </body>
+    </ion-content>
+</ion-view>

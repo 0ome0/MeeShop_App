@@ -1,0 +1,93 @@
+<ion-view view-title="{{header}}">
+    <ion-content>
+        <div class="padding">
+            <!-- <h3>List Detail Page</h3> -->
+            <!--     <div class="padding" ng-click="refresh_list()" >
+     
+      <button class="button button-energized button-block">
+        Refresh Data
+      </button>
+      
+      <div class="padding">
+                    
+                    <input class="padding" type="text" placeholder="Search" ng-model="list_search">
+      </div>        
+    </div>
+     <ion-list>
+      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="borrow in borrow_list | filter : list_search " type="item-text-wrap" href="#/tab/chats/{{chat.id}}">
+        <img ng-src="{{borrow.cat_img_path}}">
+        <h3> Transaction id # : {{ borrow.id }}</h3>
+        <h3> Serial # : {{ borrow.serial_number }}</h3>
+        <h2> แผนกที่ยืม : {{borrow.dept}}</h2> 
+        <h2> วันที่ยืม : {{borrow.borrow_date}} ( {{ borrow.borrow_days}} วัน )</h2> 
+        <h2> ชื่อผู้ยืม : {{borrow.emp_name}} </h2>
+        <h2> ชื่อผู้จ่ายอุปกรณ์  : {{borrow.staff_name}} </h2>
+        <p> อุปกรณ์ : <b>{{borrow.description}} <b></p>
+        
+          
+
+        <i class="icon ion-chevron-right icon-accessory"></i>
+
+        <ion-option-button class="button-assertive">
+        
+          Click
+        </ion-option-button>
+      </ion-item>
+    </ion-list> -->
+            <div class="list card">
+                <div class="item">
+                    <h2> รายละเอียดการยืมอุปกรณ์</h2>
+                </div>
+                <div class="item item-body">
+                    <img class="full-image" src="{{ list_detail.cat_img_path}}">
+                    <h3> 
+                    Transaction id : {{list_detail.id}}
+                    </h3>
+      วันที่ยืม : {{list_detail.borrow_date}} ( เมื่อ {{list_detail.borrow_days}} วันก่อน )
+    </h3>
+                    <h3>
+      Serial Number # : {{ list_detail.serial_number}}
+    </h3>
+                    <p>
+                        Description : {{ list_detail.description}}
+                    </p>
+                    <hr>
+                    <p>
+                        แผนกที่ยืม : {{ list_detail.dept}}
+                    </p>
+                    <p>
+                        ผู้ยืม : {{ list_detail.emp_name}}
+                    </p>
+                    <p>
+                        ผู้จ่ายอุปกรณ์ : {{ list_detail.staff_name}}
+                    </p>
+                    <p>
+                        Commment : {{ list_detail.comment}}
+                    </p>
+                </div>
+                <div class="padding">
+                    <div class="list">
+                        <label class="item item-input item-stacked-label">
+                            <span class="input-label">ชื่อผู้คืนอุปกรณ์</span>
+                            <!-- <input type="text" placeholder="สราวุธ เมืองธรรม" ng-model="modelEmpName"> -->
+                            <input type="text" placeholder="ใส่ชื่อผู้คืนอุปกรณ์" ng-model="list.return_empName" ng-change="changeTxt(list)">
+                        </label>
+                        <label class="item item-input item-select">
+                            <div class="input-label">
+                                ชื่อผู้รับคืนอุปกรณ์ (MIS)
+                            </div>
+                            <select ng-model="list.return_staffName" ng-change="changeTxt(list)">
+                                <option selected>สราวุธ</option>
+                                <option>สุชีรา</option>
+                                <option>อัครพล</option>
+                            </select>
+                        </label>
+                    </div>
+                    <button class="button button-block button-positive" ng-click="updateList(list)" ng-show="btn_disable == 'true'">
+                        บันทึกการคืน อุปกรณ์
+                    </button>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

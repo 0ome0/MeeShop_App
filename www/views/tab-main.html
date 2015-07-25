@@ -1,0 +1,64 @@
+<ion-view view-title="ยินดีต้อนรับ ร้าน {{ company[0].company_name }}">
+    <ion-content class="padding">
+
+        <body class="main_body">
+            <!-- <div class="home-hello">
+      <img class="image_cover" style="text-align: center; width: 100%;" src="http://cdn3.bigcommerce.com/s-lzx6le/product_images/uploaded_images/sweetshop-banner.png?t=1403311119"> -->
+            <div class="home-hello">
+                <img class="image_cover" style="text-align: center; width: 100%;" src="http://market.onlineoops.com/upload/1/20120419/787058211621620.jpg">
+                <div class="item item-text-wrap" style="background-color: #5998FF; color: #FFFFFF;">
+                    <h1 style="color: #FFFFFF;">{{ company[0].company_name }}</h1> เสื้อผ้าแฟชั่นสไตล์เกาหลี, พร้อมสั่ง และพรีออเดอร์ ราคาถูก
+                </div>
+            </div>
+           <!--  <ion-slide-box>
+                <ion-slide ng-repeat="s in slide">
+                    <div class="box blue">
+                        <img class='slide_box' ng-src="{{ image_url }}/{{ image_prouducts }}/{{ s.image }}" />
+                    </div>
+                </ion-slide>
+            </ion-slide-box> -->
+            <hr>
+            <ion-slide-box on-slide-changed="slideHasChanged($index)">
+                <ion-slide ng-repeat="s in slides">
+                    <div class="box blue">
+                        <img ng-src="{{ image_url }}/{{ image_prouducts }}/{{ s.image }}" style="width:100%;" /></div>
+                </ion-slide>
+                
+            </ion-slide-box>
+            <!--   <div class="list card" ng-repeat="s in slide">
+                <div class="item item-divider">
+                    <img ng-src="{{ image_url }}/{{ image_prouducts }}/{{ s.image }}" style="text-align: center; width: 100%;">
+                </div>
+                <div class="item item-body">
+                    <div style="text-align: center">
+                        {{s.title}}</b>
+                    </div>
+                </div>
+            </div> -->
+        </body>
+    </ion-content>
+</ion-view>
+<!--     <div class="list card">
+      <div class="item item-divider">Recent Updates</div>
+      <div class="item item-body">
+        <div>
+          There is a fire in <b>sector 3</b>
+        </div>
+      </div>
+    </div>
+    <div class="list card">
+      <div class="item item-divider">Health</div>
+      <div class="item item-body">
+        <div>
+          You ate an apple today!
+        </div>
+      </div>
+    </div>
+    <div class="list card">
+      <div class="item item-divider">Upcoming</div>
+      <div class="item item-body">
+        <div>
+          You have <b>29</b> meetings on your calendar tomorrow.
+        </div>
+      </div>
+    </div> -->

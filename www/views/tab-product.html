@@ -1,0 +1,87 @@
+<ion-view view-title="{{header}}">
+    <ion-content>
+        <!--  <div class="list">
+            <label class="item item-input item-select">
+                <div class="input-label">
+                    ประเภทสินค้า
+                </div>
+                <select ng-model="catQuery.cat_id">
+                    <option value="0">สินค้า ทั้งหมด</option>
+                    <option value="1">สินค้า ขายดี</option>
+                    <option value="2">สินค้า โปรโมชั่น</option>
+                    <option value="3">สินค้า แนะนำ</option>
+                </select>
+            </label>
+        </div>
+        <div class="list">
+            <label class="item item-input item-select">
+                <div class="input-label">
+                    หมวดสินค้า
+                </div>
+                <select>
+                    <option>สินค้า ทั้งหมด</option>
+                    <option>โคมไฟ</option>
+                    <option>พัดลม</option>
+                    <option>ชั้นวางของ</option>
+                    <option>แก้วน้ำ</option>
+                </select>
+            </label>
+        </div>
+        <p>category_id : {{ catQuery }}</p>
+         -->
+        
+
+        <div class="list">
+            <label class="item item-input item-select">
+                <div class="input-label" style="background-color: #387EF5; padding:3% ; color:white;">
+                    หมวดสินค้า
+                </div>
+                <select ng-model="catQuery.cat_name">
+                    <!-- <option>Blue</option> -->
+                    <option selected >หมวดสินค้าทั้งหมด</option>
+                    <option ng-repeat="p in products">{{p.cat_name}}</option>
+                    <!-- <option>Red</option> -->
+                </select>
+            </label>
+
+             <label class="item item-input item-select">
+                <div class="input-label" style="background-color: #D72523; padding:3% ; color:white;">
+                    ประเภทสินค้า
+                </div>
+                <select ng-model="catQuery.type_name">
+                    <option selected >ประเภทสินค้าทั้งหมด</option>
+                    <option ng-repeat="p in products">{{p.type_name}}</option>
+                    <!-- <option>Red</option> -->
+                </select>
+            </label>
+        </div>
+
+
+        <div class="pinGridWrapper">
+            <!-- <h1>CSS Only Responsive Pinterest Style Grid</h1> -->
+            <div class="pinGrid">
+                <div class="pin" ng-repeat="p in products | filter : catQuery">
+                    
+                    <div class="line"></div>
+                    <h3  style="background-color: #4689F7; color: #FFFFFF">{{p.cat_name}}</h3>
+                    <h3  style="background-color: #E98003; color: #FFFFFF">{{p.type_name}}</h3>
+                    <img ng-src="{{ image_url }}/{{ image_prouducts }}/{{ p.image_thumb }}" style="width: 100%">
+                    <h2>
+                    <a href="#/tab/product/{{p.product_id}}" style="text-decoration:none;">
+                    <i class="icon ion-arrow-right-c"></i>
+                    {{p.description}}
+                    </a>
+                    </h2>
+                    <div class="line" style="border-bottom: 1px solid #ccc;"></div>
+                    <h3>{{p.price | currency : 'THB '}}</h3>
+                    <!--  <p> รหัสสินค้า <b>{{p.product_id}}</b> / <b>{{p.product_code}}</b></p> -->
+                </div>
+            </div>
+            
+        </div>
+        
+           
+           
+        </div>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,38 @@
+<ion-view view-title="{{header}}">
+  <ion-content>
+    
+     <div class="list card" ng-repeat="banner in banners">
+                <div class="item item-divider" >
+                    <img ng-src="{{ image_url }}/{{ image_prouducts }}/{{ banner.image }}" style="text-align: center; width: 100%;">
+                </div>
+                <div class="item item-body" style="background-color: #4EA3FC">
+                    <div style="text-align: center; color: #FFFFFF">
+                       Advertise Banner ID : {{banner.banner_id}}</b>
+                    </div>
+                </div>
+            </div>
+<!-- 
+            <ion-slide-box>
+                <ion-slide ng-repeat="banner in banners">
+                    <div class="box_slide" >
+                        
+                        <img class="slide_show_img" ng-src="{{ image_url }}/{{ image_prouducts }}/{{ banner.image }}"/>
+                    </div>
+                </ion-slide>
+            </ion-slide-box> -->
+     
+
+     <!-- <div class="list card" ng-repeat="s in slide">
+                <div class="item item-divider">
+                    <img ng-src="{{ image_url }}/{{ image_prouducts }}/{{ s.image }}" style="text-align: center; width: 100%;">
+                </div>
+                <div class="item item-body">
+                    <div style="text-align: center">
+                       {{s.title}}</b>
+                    </div>
+                </div>
+            </div>
+      -->
+   
+  </ion-content>
+</ion-view>
